@@ -35,9 +35,32 @@ class Figure
      */
     private $photos;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Videos::class, mappedBy="figure", orphanRemoval=true)
+     */
+    private $videos;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Groupe::class, inversedBy="figures")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $Groupe;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Forum::class, mappedBy="Figure")
+     */
+    private $Forum;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="Figure")
+     */
+    private $User;
+
     public function __construct()
     {
         $this->photos = new ArrayCollection();
+        $this->videos = new ArrayCollection();
+        $this->Forum = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -95,6 +118,90 @@ class Figure
                 $photo->setFigure(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Videos[]
+     */
+    public function getVideos(): Collection
+    {
+        return $this->videos;
+    }
+
+    public function addVideo(Videos $video): self
+    {
+        if (!$this->videos->contains($video)) {
+            $this->videos[] = $video;
+            $video->setFigure($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVideo(Videos $video): self
+    {
+        if ($this->videos->removeElement($video)) {
+            // set the owning side to null (unless already changed)
+            if ($video->getFigure() === $this) {
+                $video->setFigure(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getGroupe(): ?Groupe
+    {
+        return $this->Groupe;
+    }
+
+    public function setGroupe(?Groupe $Groupe): self
+    {
+        $this->Groupe = $Groupe;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Forum[]
+     */
+    public function getForum(): Collection
+    {
+        return $this->Forum;
+    }
+
+    public function addForum(Forum $forum): self
+    {
+        if (!$this->Forum->contains($forum)) {
+            $this->Forum[] = $forum;
+            $forum->setFigure($this);
+        }
+
+        return $this;
+    }
+
+    public function removeForum(Forum $forum): self
+    {
+        if ($this->Forum->removeElement($forum)) {
+            // set the owning side to null (unless already changed)
+            if ($forum->getFigure() === $this) {
+                $forum->setFigure(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->User;
+    }
+
+    public function setUser(?User $User): self
+    {
+        $this->User = $User;
 
         return $this;
     }
