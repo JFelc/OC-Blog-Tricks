@@ -22,6 +22,12 @@ class Videos
      */
     private $name;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Figure::class, inversedBy="videos")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $figure;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -35,6 +41,18 @@ class Videos
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getFigure(): ?Figure
+    {
+        return $this->figure;
+    }
+
+    public function setFigure(?Figure $figure): self
+    {
+        $this->figure = $figure;
 
         return $this;
     }

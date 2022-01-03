@@ -25,7 +25,13 @@ class Photo
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $description;
+    private $url;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Figure::class, inversedBy="photos")
+     * @ORM\JoinColumn(name="fk_figure_photo", referencedColumnName="id", nullable=false)
+     */
+    private $figure;
 
     public function getId(): ?int
     {
@@ -44,14 +50,26 @@ class Photo
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getUrl(): ?string
     {
-        return $this->description;
+        return $this->url;
     }
 
-    public function setDescription(string $description): self
+    public function setUrl(string $url): self
     {
-        $this->description = $description;
+        $this->url = $url;
+
+        return $this;
+    }
+
+    public function getFigure(): ?Figure
+    {
+        return $this->figure;
+    }
+
+    public function setFigure(?Figure $figure): self
+    {
+        $this->figure = $figure;
 
         return $this;
     }

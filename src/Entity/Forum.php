@@ -27,6 +27,16 @@ class Forum
      */
     private $date;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Figure::class, inversedBy="Forum")
+     */
+    private $Figure;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="Forum")
+     */
+    private $User;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -52,6 +62,30 @@ class Forum
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getFigure(): ?Figure
+    {
+        return $this->Figure;
+    }
+
+    public function setFigure(?Figure $Figure): self
+    {
+        $this->Figure = $Figure;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->User;
+    }
+
+    public function setUser(?User $User): self
+    {
+        $this->User = $User;
 
         return $this;
     }
