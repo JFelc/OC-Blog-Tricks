@@ -7,6 +7,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use App\Entity\User;
+use App\Security\FormLoginAuthenticator;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+use App\Form\RegistrationFormType;
 
 class UserController extends AbstractController
 {
@@ -25,6 +29,29 @@ class UserController extends AbstractController
             'error' => $error,
             ]
         );
+    }
+     /**
+     * @Route("/signup", name="sign_up")
+     */
+    public function signUp(GuardAuthenticatorHandler $guard, Request $request, FormLoginAuthenticator $formLogin): Response 
+    {
+        $user = new User();
+        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+        
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        // do anything else you need here, like send an email
+
+        return $this->redirect('home');
+    }
+
+    return $this->render('security/signup.html.twig', [
+        'registrationForm' => $form->createView(),
+        ]);
     }
 
     /**

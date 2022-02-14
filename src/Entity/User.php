@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
  */
-class User
+class User implements UserInterface
 {
     /**
      * @ORM\Id
@@ -57,6 +57,11 @@ class User
      */
     private $Forum;
 
+        /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
     public function __construct()
     {
         $this->Figure = new ArrayCollection();
@@ -66,9 +71,18 @@ class User
     public function get(): ?User 
     {
         $this->email = $this->getEmail();
-        $this->username = $this->getUsername();
+        $this->username = $this->getUserIdentifier();
         $this->password = $this->getPassword();
         $this->id = $this->getId();
+
+        return $this;
+    }
+
+    public function register($data): ?User
+    {
+        $this->setUsername($data['username']);
+        $this->setPassword($data['password']);
+        $this->setEmail($data['email']);
 
         return $this;
     }
@@ -76,6 +90,11 @@ class User
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getUserIdentifier(): ?string
+    {
+        return $this->username;
     }
 
     public function getUsername(): ?string
@@ -214,6 +233,7 @@ class User
     {
         $this->roles = $roles;
     }
+    
 
     public function getSalt(): ?string
     {
