@@ -5,13 +5,16 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
  */
-class User
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
      * @ORM\Id
@@ -23,7 +26,7 @@ class User
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private $username;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -55,10 +58,34 @@ class User
      */
     private $Forum;
 
+        /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
     public function __construct()
     {
         $this->Figure = new ArrayCollection();
         $this->Forum = new ArrayCollection();
+    }
+
+    public function get(): ?User 
+    {
+        $this->email = $this->getEmail();
+        $this->username = $this->getUserIdentifier();
+        $this->password = $this->getPassword();
+        $this->id = $this->getId();
+
+        return $this;
+    }
+
+    public function register($data): ?User
+    {
+        $this->setUsername($data['username']);
+        $this->setPassword($data['password']);
+        $this->setEmail($data['email']);
+
+        return $this;
     }
 
     public function getId(): ?int
@@ -66,14 +93,19 @@ class User
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getUserIdentifier(): ?string
     {
-        return $this->name;
+        return $this->username;
     }
 
-    public function setName(string $name): self
+    public function getUsername(): ?string
     {
-        $this->name = $name;
+        return $this->username;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
 
         return $this;
     }
@@ -184,5 +216,34 @@ class User
         }
 
         return $this;
+    }
+
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+
+        // il est obligatoire d'avoir au moins un rôle si on est authentifié, par convention c'est ROLE_USER
+        if (empty($roles)) {
+            $roles[] = 'ROLE_USER';
+        }
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+    
+
+    public function getSalt(): ?string
+    {
+        return null;
+    }
+
+    public function eraseCredentials(): void
+    {
     }
 }
