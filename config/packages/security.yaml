@@ -24,4 +24,12 @@ security:
             - App\Security\FormLoginAuthenticator
 
   access_control:
-    #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+
+      #requires_channel: https Impossible en dev
+    - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY  }
+
+    - { path: ^/edit, roles: ROLE_USER }
+
+    - { path: ^/delete, roles: ROLE_USER}
+
+    #- { path: ^/createComment, roles: ROLE_USER, requires_channel: https }
