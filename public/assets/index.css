@@ -14,3 +14,12 @@
     padding: 30px;
 }
 
+.background{
+    background-image: url("Big_Pine_landscape.jpg");
+    background-size: 100%;
+    width: 100%;
+    height: 700px;
+}
+.figure-edits{
+    z-index: 99;
+}
