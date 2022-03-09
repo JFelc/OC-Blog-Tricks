@@ -6,7 +6,9 @@ use App\Repository\FigureRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+
 use App\Entity\Photo;
+use App\Entity\Groupe;
 
 /**
  * @ORM\Entity(repositoryClass=FigureRepository::class)
@@ -41,7 +43,7 @@ class Figure
     private $videos;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Groupe::class, inversedBy="figures")
+     * @ORM\ManyToOne(targetEntity=Groupe::class, inversedBy="figure")
      * @ORM\JoinColumn(nullable=false)
      */
     private $Groupe;
@@ -115,6 +117,7 @@ class Figure
         if ($this->photos->removeElement($photo)) {
             // set the owning side to null (unless already changed)
             if ($photo->getFigure() === $this) {
+                dump($photo);
                 $photo->setFigure(null);
             }
         }

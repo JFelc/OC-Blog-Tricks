@@ -27,11 +27,11 @@ class Groupe
     /**
      * @ORM\OneToMany(targetEntity=Figure::class, mappedBy="Groupe", orphanRemoval=true)
      */
-    private $figures;
+    private $figure;
 
     public function __construct()
     {
-        $this->figures = new ArrayCollection();
+        $this->figure = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -54,15 +54,16 @@ class Groupe
     /**
      * @return Collection|Figure[]
      */
-    public function getFigures(): Collection
+    
+    public function getFigure(): Collection
     {
-        return $this->figures;
+        return $this->figure;
     }
 
     public function addFigure(Figure $figure): self
     {
-        if (!$this->figures->contains($figure)) {
-            $this->figures[] = $figure;
+        if (!$this->figure->contains($figure)) {
+            $this->figure[] = $figure;
             $figure->setGroupe($this);
         }
 
@@ -71,7 +72,7 @@ class Groupe
 
     public function removeFigure(Figure $figure): self
     {
-        if ($this->figures->removeElement($figure)) {
+        if ($this->figure->removeElement($figure)) {
             // set the owning side to null (unless already changed)
             if ($figure->getGroupe() === $this) {
                 $figure->setGroupe(null);
@@ -80,4 +81,5 @@ class Groupe
 
         return $this;
     }
+    
 }
