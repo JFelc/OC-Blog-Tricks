@@ -25,7 +25,8 @@ class UserController extends AbstractController
         // retrouver le dernier identifiant de connexion utilisé
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        if(isset($lastUsername)){
+        
+        if(isset($lastUsername) && !empty($lastUsername)){
             return $this->redirect('home');
         }
         
