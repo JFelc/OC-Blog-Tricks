@@ -29,7 +29,7 @@ class Photo
 
     /**
      * @ORM\ManyToOne(targetEntity=Figure::class, inversedBy="photos")
-     * @ORM\JoinColumn(name="fk_figure_photo", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(nullable=false)
      */
     private $figure;
 
