@@ -8,13 +8,19 @@
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
-<div class="example-wrapper">
+<div class="card-group">
     <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/xampp/htdocs/Projet6_OC/OC-Tricks/src/Controller/HomeController.php'|file_link(0) }}">src/Controller/HomeController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/xampp/htdocs/Projet6_OC/OC-Tricks/templates/home/index.html.twig'|file_link(0) }}">templates/home/index.html.twig</a></code></li>
-    </ul>
+    <img src="Big_Pine_landscape.jpg">
+    {% for trick in tricks %}
+        {% for photo in trick.photos %}
+    <div class="card">
+        <img src="{{photo.url}}" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">{{trick.name}}</h5>
+            <i class="fas fa-edit"></i>
+        </div>
+    </div>
+    {% endfor %}
+    {% endfor %}
 </div>
 {% endblock %}
