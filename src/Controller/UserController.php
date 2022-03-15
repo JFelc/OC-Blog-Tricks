@@ -36,9 +36,9 @@ class UserController extends AbstractController
             ]
         );
     }
-     /**
-     * @Route("/signup", name="sign_up")
-     */
+      /**
+      * @Route("/signup", name="sign_up")
+      */
     public function signUp(GuardAuthenticatorHandler $guard, Request $request, FormLoginAuthenticator $formLogin, UserPasswordEncoderInterface $passwordEncoder): Response 
     {
         $user = new User();
