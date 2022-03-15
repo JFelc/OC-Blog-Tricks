@@ -21,5 +21,3 @@ env.test
 .phpunit.result.cache
 ###< phpunit/phpunit ###
 
-###composer ###
-/composer.lock
